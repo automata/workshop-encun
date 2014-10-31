@@ -5,21 +5,22 @@
     <script src="../coffeescript.js"></script>
   </head>
   <body>
-    <script src="../init.js">
+    <script src="../init.js"></script>
     <script type="text/coffeescript">
       senoide = (freq, detune) ->
         oscillator = context.createOscillator()
         oscillator.connect context.destination
    
         # Play a sine type curve at A4 frequency (440hz).
-        oscillator.frequency.value = freq;
-        oscillator.detune.value = detune * 100;
+        oscillator.frequency.value = freq
+        oscillator.detune.value = detune
         
         # Note: this constant will be replaced with "sine".
-        oscillator.type = oscillator.SINE;
+        oscillator.type = "sawtooth"
         oscillator.start 0
+        alert "#{oscillator}"
       
-      senoide 440, 10
+      senoide 440, 78
 
     </script>
   </body>

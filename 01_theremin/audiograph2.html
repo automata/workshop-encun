@@ -10,6 +10,7 @@
       if contextClass
         # Web Audio API is available.
         context = new contextClass();
+        alert "OK"
       else 
         # Web Audio API is not available. Ask the user to use a
         # supported browser.
@@ -24,6 +25,8 @@
       # Connect source to filter, filter to destination.
       source.connect gain
       gain.connect context.destination
+
+      alert "#{source} #{gain}"
 
       # Disconnect source from gain, and connects directly
       # to destination
