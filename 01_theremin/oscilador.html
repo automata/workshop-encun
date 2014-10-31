@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Theremin</title>
+    <script src="../coffeescript.js"></script>
+  </head>
+  <body>
+    <script src="../init.js">
+    <script type="text/coffeescript">
+      senoide = (freq, detune) ->
+        oscillator = context.createOscillator()
+        oscillator.connect context.destination
+   
+        # Play a sine type curve at A4 frequency (440hz).
+        oscillator.frequency.value = freq;
+        oscillator.detune.value = detune * 100;
+        
+        # Note: this constant will be replaced with "sine".
+        oscillator.type = oscillator.SINE;
+        oscillator.start 0
+      
+      senoide 440, 10
+
+    </script>
+  </body>
+  
+</html>
