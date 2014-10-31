@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Crossfade</title>
+    <script src="../lib/coffeescript.js"></script>
+  </head>
+  <body>
+    <script src="../lib/init.js"></script>
+    <script src="../lib/osc.js"></script>
+    <script type="text/coffeescript">
+      equalPowerCrossfade = (percent, node1, node2) ->
+        # Use an equal-power crossfading curve:
+        gain1 = Math.cos percent * 0.5*Math.PI
+        gain2 = Math.cos (1.0 - percent) * 0.5*Math.PI
+        node1.gainNode.gain.value = gain1
+        node2.gainNode.gain.value = gain2
+
+      sin = osc "sine", 440, 10
+      saw = osc "sawtooth", 445, 5
+
+      sin.gainNode.gain.value = 1
+      saw.gainNode.gain.value = 0
+
+      sin.play()
+      saw.play()
+ 
+      setTimeout((-> equalPowerCrossfade i, sin, saw), i*1000) for i in [1..100]
+             
+    </script>
+  </body>
+  
+</html>
