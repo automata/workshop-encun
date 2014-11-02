@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Theremin</title>
+    <title>Crossfade</title>
     <script src="../lib/coffeescript.js"></script>
+    <script src="../lib/init.js"></script>
+    <script src="../lib/buffer.js"></script>
   </head>
   <body>
-    <script src="../lib/init.js"></script>
-    <script src="../lib/osc.js"></script>
     <script type="text/coffeescript">
-      sqr(440, 10).play()
+      carrega "som.mp3", (fonte) ->
+        fonte.start 0
     </script>
   </body>
   

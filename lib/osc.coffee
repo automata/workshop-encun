@@ -10,7 +10,7 @@ osc = (type, freq, detune) ->
         oscillator.type = if type is "sine" or type is "sawtooth" or type is "triangle" or type is "square" then type else alert "Not valid oscillator"
         oscillator.start 0
 
-window.sine = (freq, detune) -> osc "sine", freq, detune
+window.sin = (freq, detune) -> osc "sine", freq, detune
 window.saw = (freq, detune) -> osc "sawtooth", freq, detune
 window.tri = (freq, detune) -> osc "triangle", freq, detune
-window.saw = (freq, detune) -> osc "square", freq, detune
+window.sqr = (freq, detune) -> osc "square", freq, detune

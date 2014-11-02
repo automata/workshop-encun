@@ -6,22 +6,9 @@
   </head>
   <body>
     <script src="../lib/init.js"></script>
+    <script src="../lib/osc.js"></script>
     <script type="text/coffeescript">
-      senoide = (freq, detune) ->
-        oscillator = context.createOscillator()
-        oscillator.connect context.destination
-   
-        # Play a sine type curve at A4 frequency (440hz).
-        oscillator.frequency.value = freq
-        oscillator.detune.value = detune
-        
-        # Note: this constant will be replaced with "sine".
-        oscillator.type = "sine"
-        oscillator.start 0
-        alert "#{oscillator}"
-      
-      senoide 440, 78
-
+      sin(440, 10).play()
     </script>
   </body>
   

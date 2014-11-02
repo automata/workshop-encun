@@ -2,10 +2,13 @@
 <html>
   <head>
     <title>Theremin</title>
-    <script src="../coffeescript.js"></script>
+    <script src="../lib/coffeescript.js"></script>
+    <script src="../lib/jquery.js"></script>
+    <script src="../lib/showscript.js"></script>
   </head>
   <body>
-    <script type="text/coffeescript">
+    <pre><code id="code"></code></pre>
+    <script id="audio" type="text/coffeescript">
       contextClass = (window.AudioContext or window.webkitAudioContext or window.mozAudioContext or window.oAudioContext or window.msAudioContext)
       if contextClass
         # Web Audio API is available.
@@ -26,13 +29,20 @@
       source.connect gain
       gain.connect context.destination
 
-      alert "#{source} #{gain}"
+      alert "connected #{source} to #{gain}"
 
       # Disconnect source from gain, and connects directly
       # to destination
       source.disconnect 0
       gain.disconnect 0
+
+      alert "disconnected #{source} from #{gain}"
+
       source.connect context.destination
+
+      alert "connected #{source} directly to #{context.destination}"
+
+      show "code", "audio"
     </script>
   </body>
   
