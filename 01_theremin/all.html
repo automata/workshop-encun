@@ -7,24 +7,35 @@
     <script src="../lib/coffeescript.js"></script>
     <script src="../lib/init.js"></script>
     <script src="../lib/osc.js"></script>
+    <script src="../lib/buffer.js"></script>
   </head>
   <body>
     
     <script id="audio" type="text/coffeescript">
      init()
-     osc = (type, freq, detune) ->
-       oscillator = window.context.createOscillator()
-       oscillator.connect window.context.destination
-       
-       # Play a sine type curve at A4 frequency (440hz).
-       oscillator.frequency.value = freq
-       oscillator.detune.value = detune
-       oscillator.type = type
-       alert oscillator     
+     osc "sine", 440, 10
+
+     setTimeout ->
+       osc "sawtooth", 445, 1
+     , 1000
+
+     setTimeout ->
+       osc "triangle", 435, -1
+     , 2000
+
+     setTimeout ->
+       osc "square", 450, -1
+     , 3000
+
+     setTimeout ->
+       osc "sine", 430, 1
+     , 4000
+
+     setTimeout ->
+       carrega "som.mp3", (buffer) -> buffer.start 0
+     , 5000
+
      
-       oscillator.start 0
-    
-     osc "square", 440, 1
      show "audio"
     </script>
   </body>

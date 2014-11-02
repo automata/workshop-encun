@@ -5,11 +5,11 @@ window.carrega = (url, processa) ->
 
   # Decode asynchronously
   request.onload = ->
-    context.decodeAudioData request.response, (theBuffer) ->
-      alert "Carregado #{buffer}"
-      source = context.createBufferSource()
+    window.context.decodeAudioData request.response, (theBuffer) ->
+      alert "Carregado #{url}"
+      source = window.context.createBufferSource()
       source.buffer = theBuffer
-      source.connect context.destination
+      source.connect window.context.destination
       processa source
     
   request.send()

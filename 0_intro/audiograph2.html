@@ -7,7 +7,6 @@
     <script src="../lib/showscript.js"></script>
   </head>
   <body>
-    <pre><code id="code"></code></pre>
     <script id="audio" type="text/coffeescript">
       contextClass = (window.AudioContext or window.webkitAudioContext or window.mozAudioContext or window.oAudioContext or window.msAudioContext)
       if contextClass
@@ -42,7 +41,7 @@
 
       alert "connected #{source} directly to #{context.destination}"
 
-      show "code", "audio"
+      show "audio"
     </script>
   </body>
   

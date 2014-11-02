@@ -3,15 +3,17 @@
   <head>
     <title>Theremin</title>
     <script src="../lib/jquery.js"></script>
+    <script src="../lib/showscript.js"></script>
     <script src="../lib/coffeescript.js"></script>
     <script src="../lib/init.js"></script>
-    <script src="../lib/showscript.js"></script>
+    <script src="../lib/buffer.js"></script>
   </head>
   <body>
-    <pre><code id="code"></code></pre>
+    
     <script id="audio" type="text/coffeescript">
-      init()
-      show "audio"
+     init()
+     carrega "som.mp3", (src) -> src.start 0
+     show "audio"
     </script>
   </body>
   

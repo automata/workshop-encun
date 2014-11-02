@@ -2,13 +2,27 @@
 <html>
   <head>
     <title>Theremin</title>
+    <script src="../lib/jquery.js"></script>
     <script src="../lib/coffeescript.js"></script>
-  </head>
-  <body>
     <script src="../lib/init.js"></script>
     <script src="../lib/osc.js"></script>
-    <script type="text/coffeescript">
-      sin(440, 10).play()
+    <script src="../lib/showscript.js"></script>
+  </head>
+  <body>
+    <script id="audio" type="text/coffeescript">
+     init()
+     oscillator = context.createOscillator()
+     oscillator.connect context.destination
+   
+     
+     # Play a sine type curve at A4 frequency (440hz).
+     oscillator.frequency.value = 440.0
+     oscillator.detune.value = 0.0
+     oscillator.type = "sine"
+     alert oscillator     
+     
+     oscillator.start 0
+     show "audio"
     </script>
   </body>
   

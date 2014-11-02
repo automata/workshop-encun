@@ -2,14 +2,30 @@
 <html>
   <head>
     <title>Crossfade</title>
+    <script src="../lib/jquery.js"></script>
+    <script src="../lib/showscript.js"></script>
     <script src="../lib/coffeescript.js"></script>
     <script src="../lib/init.js"></script>
     <script src="../lib/buffer.js"></script>
   </head>
   <body>
-    <script type="text/coffeescript">
-      carrega "som.mp3", (fonte) ->
-        fonte.start 0
+    <script id="audio" type="text/coffeescript">
+      init()
+      request = new XMLHttpRequest()
+      request.open 'GET', "../assets/som.mp3", true
+      request.responseType = 'arraybuffer';
+
+      # Decode asynchronously
+      request.onload = ->
+        window.context.decodeAudioData request.response, (theBuffer) ->
+          alert "Carregado buffer"
+          source = window.context.createBufferSource()
+          source.buffer = theBuffer
+          source.connect window.context.destination
+          source.start 0
+    
+      request.send()
+      show "audio"
     </script>
   </body>
   
