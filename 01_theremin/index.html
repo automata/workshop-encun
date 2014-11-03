@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Theremin</title>
+    <script src="../lib/coffeescript.js"></script>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+
+    <script type="text/coffeescript">
+     # Criando o contexto de áudio, oscilador e ganho
+     ctx = new (window.AudioConext || window.webkitAudioContext)()
+     osc = ctx.createOscillator()
+     gain = ctx.createGain()
+
+     # Patching OSC -> GAIN -> OUT
+     osc.connect gain
+     gain.connect ctx.destination
+   
+     # Define parâmetros iniciais do oscilador
+     osc.frequency.value = 440.0
+     osc.detune.value = 0.0
+     osc.type = "sine"
+
+     # Define parâmetro inicias do ganho
+     gain.gain.value = 0.01
+
+     # Toca o oscilador daqui a 0 segundos (agora)
+     osc.start 0
+
+     # Atualização de parâmetros sonoros pelo mouse
+     width = window.innerWidth
+     height = window.innerHeight
+
+     maxFrequency = 6000.0
+     maxVolume = 0.02
+
+     update = (e) ->
+        x = e.clientX
+        y = e.clientY
+
+        osc.frequency.value = ((height-y)/height) * maxFrequency
+        gain.gain.value = (x/width) * maxVolume
+
+        draw(x, y)
+
+     # Desenha o percurso do mouse
+     canvas = document.getElementById('canvas')
+     canvas.width = width
+     canvas.height = height
+     canvasCtx = canvas.getContext('2d')
+     
+     draw = (x, y) ->
+        canvasCtx.fillStyle = '#000'
+        canvasCtx.beginPath()
+        canvasCtx.arc x, y, 10, 0, Math.PI*2, false
+        canvasCtx.fill()
+
+     document.onmousemove = update
+    </script>
+  </body>
+  
+</html>
