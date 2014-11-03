@@ -11,15 +11,26 @@
     <script type="text/coffeescript">
     Gibber.init()
 
-    a = EDrums('x*ox*xox') // make a drum beat
-    a.snare.snappy = 1     // set the noise level in the snare
+    #a = EDrums('x*ox*xox') # make a drum beat
+    #a.snare.snappy = 1     # set the noise level in the snare
+    #a.fx.add( Reverb() )   # add reverb to drums
 
-    a.fx.add( Reverb() )   // add reverb to drums
+    b = FM({attack: ms(1) })
+    b.fx.add( Delay() )
 
-    b = TorusKnot({scale: 2}).spin(.001) // create a knot geometry
+    b.play( ['c2','c2','c2','c3','c4'].random(), [1/4,1/8,1/16].random(1/16,2) )
 
-    c = Dots() // add a halftone shader effect
-    c.scale = Master.Out // scale of dots tracks master audio output
+    width = window.innerWidth
+    height = window.innerHeight
+
+    update = (e) ->
+        x = e.clientX / width
+        y = e.clientY / height
+        b.cmRatio = x
+        b.fx[0].time = x
+        b.fx[0].feedback = y
+
+    document.onmousemove = update
     </script>
   </body>
   
