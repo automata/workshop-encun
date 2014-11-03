@@ -1,7 +1,97 @@
-<!-- Qual e a primeira a coisa a fazer? >
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Theremin</title>
+    <!-- <script src="../lib/coffeescript.js"></script> -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"></script>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
 
-<!-- Qual e a estrutura html? >
+    <script type="text/coffeescript">
+     ctx = new (window.AudioConext || window.webkitAudioContext)()
+     voices = {}
+     
+     socket = new WebSocket 'ws://192.168.0.2:5050'
 
-<!-- Qual e a tag html  para inserirmos um simples audio?>
+     myId = null
 
-<!-- >
+     maxFrequency = 1600.0
+     maxVolume = 0.02
+
+     socket.onopen = () ->
+      console.log 'connected to ws server'
+      myId = Math.round(Math.random() * 1000)
+      socket.send JSON.stringify {'id': myId, 'command': 'connect'}
+     
+     socket.onmessage = (event) ->
+      console.log 'received from ws server', event.data
+      message = JSON.parse event.data
+      command = message.command
+      if command is 'connect'
+        osc = ctx.createOscillator()
+        gain = ctx.createGain()
+
+        # Patching OSC -> GAIN -> OUT
+        osc.connect gain
+        gain.connect ctx.destination
+        
+        # Define parâmetros iniciais do oscilador
+        osc.frequency.value = 440.0
+        osc.detune.value = 0.0
+        osc.type = "sine"
+
+        # Define parâmetro inicias do ganho
+        gain.gain.value = 0.01
+
+        # Toca o oscilador daqui a 0 segundos (agora)
+        osc.start 0
+
+        voices[message.id] = {'osc': osc, 'gain': gain}
+      else if command is 'draw'
+        x = message.x
+        y = message.y
+        draw message.x, message.y, message.id
+
+        voices[message.id].osc.frequency.value = ((height-y)/height) * maxFrequency
+        voices[message.id].gain.gain.value = (x/width) * maxVolume
+      else if command is 'initCommands'
+        message.commands.forEach (cmd) ->
+          if cmd.command is 'draw'
+            draw cmd.x, cmd.y, cmd.id
+
+     socket.onerror = (error) ->
+      console.log 'error', error
+
+     width = window.innerWidth
+     height = window.innerHeight
+
+     update = (e) ->
+        x = e.clientX
+        y = e.clientY
+
+        # Nao precisamos mais desenhar!
+        # draw(x, y, myId)
+
+        socket.send JSON.stringify {'id': myId, 'command': 'draw', 'x': x, 'y': y}
+
+     # Desenha o percurso do mouse
+     canvas = document.getElementById('canvas')
+     canvas.width = width
+     canvas.height = height
+     canvasCtx = canvas.getContext('2d')
+     
+     draw = (x, y, id) ->
+        r = (id * 10) % 255
+        g = (id * 20) % 255
+        b = (id * 30) % 255
+        canvasCtx.fillStyle = 'rgb('+r+','+g+','+b+')'
+        canvasCtx.beginPath()
+        canvasCtx.arc x, y, 10, 0, Math.PI*2, false
+        canvasCtx.fill()
+
+     document.onmousemove = update
+    </script>
+  </body>
+  
+</html>
