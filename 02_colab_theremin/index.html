@@ -2,17 +2,18 @@
 <html>
   <head>
     <title>Theremin</title>
-    <!-- <script src="../lib/coffeescript.js"></script> -->
+    <!--<script src="../lib/coffeescript.js"></script> -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"></script>
   </head>
   <body>
     <canvas id="canvas"></canvas>
 
     <script type="text/coffeescript">
-     ctx = new (window.AudioConext || window.webkitAudioContext)()
+     window.contextClass = window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext;
+     ctx = new contextClass()
      voices = {}
      
-     socket = new WebSocket 'ws://192.168.0.2:5050'
+     socket = new WebSocket 'ws://192.168.1.6:5050'
 
      myId = null
 

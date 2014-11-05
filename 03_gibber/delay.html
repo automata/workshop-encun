@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Gibber</title>
+<script src="../lib/coffeescript.js"></script>
+<script src="../lib/gibber.lib.min.js"></script>
+<script src="../lib/jquery.js"></script>
+<script src="../lib/showscript.js"></script>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script id="audio" type="text/coffeescript">
+show "audio"
+
+# Inicializa o Gibber
+Gibber.init()
+
+# Cria um padrao de bateria
+# x - 
+# * -
+# o -
+# - -
+a = EDrums 'x*o*x*o-'
+
+# Altura em midi
+a.pitch = 60
+
+# FM - Modulacao de frequencia
+# attack - ataque do envelope em milissegundos
+# index - valor de 0 ... 1, ou um sinal de audio
+# cmRatio - Razao entre sinais Carregadora-Moduladora entre 0...1
+b = FM attack:  ms(1000), index: a.Out, cmRatio: 0.75
+
+# Adicione um simples delay
+b.fx.add Delay time: ms(900), feedback: 0.75
+
+# Toque uma sequencia octofonica em ritimos randomicos baseado 
+# em um sistema binario (1/2^n)
+b.play ['c2', 'c#2', 'd#2','e2','f#4','g3', 'a2', 'a#2'].random(),
+  [1, 1/2, 1/4,1/8,1/16].random(1/16,2) 
+
+# use o mouse para modificar o som
+update = (e) ->
+  x = e.clientX / width
+  y = e.clientY / height
+  b.cmRatio = x
+  for fx in b.fx 
+    fx.time = x
+    fx.feedback = y
+
+document.onmousemove = update
+</script>
+</body>
+</html>
