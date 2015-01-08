@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>procedural</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.9/require.min.js"></script>
+    <script src="http://sriku.org/lib/steller/steller_amd.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf8">
+      require(["scripts/dsp"], function(dsp){
+        function noise(amp){
+          return amp * (Math.random() * 2 - 1);
+        }
+
+        dsp(10, function(t){
+          return t & t >> 7 
+        })
+      })
+    </script>
+  </body>
+</html>
